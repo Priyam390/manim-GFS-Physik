@@ -419,6 +419,52 @@ class PhotonIntro(Scene):
         self.wait(60)
 
 
+class EMWave(ThreeDScene):
+    def construct(self) -> None:
+        self.camera.background_rgba = (0.05,0.05,0.05,1)     #type: ignore
+        self.camera.frame.scale(0.5)
+        B_ax = Axes()
+        E_ax = Axes().rotate(90 * DEG,X_AXIS)
+
+        def t_upd(mob, dt):
+            mob.time += dt
+
+        e_wave = OscillatingWave2D(E_ax, wave_color= BLUE_C).add_updater(t_upd)
+        b_wave = OscillatingWave2D(B_ax, wave_color= RED_C).add_updater(t_upd)
+
+        self.add( e_wave, b_wave)
+        self.wait(120)
+
+class WaveModelEnergy(Scene):
+    def construct(self) -> None:
+        self.camera.background_rgba = (0.05,0.05,0.05,1)     #type: ignore
+        self.camera.frame.scale(0.7)
+        ax = Axes(x_range=(-5,5,1))
+        
+        lmbd_vt = ValueTracker(4)
+        amp_vt = ValueTracker(1)
+
+        
+
+        def t_upd(mob, dt):
+            mob.time += dt
+        
+       
+         
+        amp_line = always_redraw(lambda: DashedVMobject(ax.get_graph(lambda x: amp_vt.get_value()), num_dashes= 100))
+
+        wave = always_redraw(lambda: OscillatingWave2D(ax,amplitude=amp_vt.get_value(), wave_len= lmbd_vt.get_value(), wave_color= get_light_color(lmbd_vt.get_value())))
+       
+
+        self.add( wave)
+        
+        
+       
+        self.play(lmbd_vt.animate(run_time = 2, rate_func = smooth).set_value(2))
+        
+        self.play(lmbd_vt.animate(run_time = 2, rate_func = smooth).set_value(4))
+
+
 class Electron(VGroup):
     def __init__(
             self, 
