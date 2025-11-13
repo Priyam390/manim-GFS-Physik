@@ -30,7 +30,7 @@ class SimpleExperimentStills(Scene):
     def construct(self) -> None:
         self.camera.background_rgba = [0.05,0.05,0.05,1]
         experiment = PhotoElectricExperimentBasic(incoming_light_wave_len= 420,
-                                                  incoming_light_intensity= 0.0,
+                                                  incoming_light_intensity= 0.5,
                                                   electron_lifetime= 14,
                                                   electron_x_boundary=(-7,4),
                                                   performant_eField= True,
@@ -41,6 +41,7 @@ class SimpleExperimentStills(Scene):
         experiment.collector_bottom.shift(6*LEFT)#type: ignore
         
         self.add(experiment)
+        self.wait(30)
         
 
 class SimpleExperimentSpeedVects(Scene):
